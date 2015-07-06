@@ -1,0 +1,7 @@
+
+module.exports = {
+
+  port: 3000,
+  ical_url: "https://omnicommons.org/calendar/events.ics"
+
+};
