@@ -18,7 +18,14 @@
             <li class="title"><%= event.title %></li>
             <li><%= event.day %> at <%= moment(event.start).format("h:mm a") %></li>
             <li>Location: <%= event.location %></li>
-            <li class="description"><%= event.short_description %></li>
+            
+            <li class="description">
+              <% if(event.short_description) { %>
+                <%= event.short_description %>
+              <% } else { %>
+                <span style="font-style:italic">No description available.</span>
+              <% } %>
+            </li>
           </ul>
         </div>
       <% }); %>

@@ -32,12 +32,13 @@ function init() {
                     events[i].day = days[events[i].start.getDay()];
                 }
 
-                if(events[i].description.length > 140) {
-                    events[i].short_description = events[i].description.substring(0, 140).replace(/\s+$/, '') + '...'; 
-                } else {
-                    events[i].short_description = events[i].description;
+                if(events[i].description) {
+                    if(events[i].description.length > 140) {
+                        events[i].short_description = events[i].description.substring(0, 140).replace(/\s+$/, '') + '...'; 
+                    } else {
+                        events[i].short_description = events[i].description;
+                    }
                 }
-
             }
             var tmpl = _.template($('#events-template').html());
 
