@@ -66,6 +66,9 @@ app.get('/events', function(req, res) {
                     location: event.location,
                     description: event.description
                 });
+                if(events.length >= settings.max_events) {
+                    break;
+                }
             }
         }
         events.sort(function(a, b) {
