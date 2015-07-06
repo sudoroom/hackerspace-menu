@@ -1,0 +1,80 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          omni-olpc-events
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: psy running omni-olpc-events
+# Description:       psy running omni-olpc-events
+### END INIT INFO
+#
+# initd a node app
+
+# Source function library.
+. /lib/lsb/init-functions
+
+logFile="/home/omni-olpc-events/omni-olpc-events.log"
+
+command="/usr/bin/node"
+nodeApp="/home/omni-olpc-events/omni-olpc-events/index.js"
+runnerApp="/home/omni-olpc-events/omni-olpc-events/node_modules/psy/cmd.js"
+workingDir="/home/omni-olpc-events/omni-olpc-events"
+port="5000"
+user="omni-olpc-events"
+
+start() {
+   echo "Starting $nodeApp"
+
+   # Notice that we change the PATH because on reboot
+   # the PATH does not include the path to node.
+
+   PATH=/usr/local/bin:$PATH
+   export NODE_ENV=production
+   export HOME="/home/omni-olpc-events/omni-olpc-events"
+
+   cd $workingDir
+
+   su $user -c "$runnerApp start --logfile $logFile --name omni-olpc-events -- node $nodeApp --port $port"
+
+
+   RETVAL=$?
+}
+
+restart() {
+	echo -n "Restarting omni-olpc-events"
+	su $user -c "$runnerApp restart omni-olpc-events"
+	RETVAL=$?
+}
+
+stop() {
+	echo -n "Shutting down omni-olpc-events"
+   su $user -c "$runnerApp stop omni-olpc-events"
+   RETVAL=$?
+}
+
+status() {
+   echo -n "Status omni-olpc-events"
+   su $user -c "$runnerApp list"
+   RETVAL=$?
+}
+
+case "$1" in
+   start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+   status)
+        status
+       ;;
+   restart)
+   	restart
+        ;;
+	*)
+       echo "Usage:  {start|stop|status|restart}"
+       exit 1
+        ;;
+esac
+exit $RETVAL

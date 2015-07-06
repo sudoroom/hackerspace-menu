@@ -1,0 +1,12 @@
+[Unit]
+Description=omni-olpc-events web app
+After=local-fs.target network.target
+
+[Service]
+Type=simple
+ExecStart=/etc/init.d/omni-olpc-events start
+ExecStop=/etc/init.d/omni-olpc-events stop
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
