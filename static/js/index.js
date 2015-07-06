@@ -2,6 +2,12 @@
 
 var router = new Grapnel();
 
+var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+// date for comparison
+function compDate(d) {
+    return d.getFullYear() * 10000 + d.getMonth() * 100 + d.getDate();
+}
 
 function init() {
 
@@ -18,10 +24,12 @@ function init() {
                 events[i].start = new Date(events[i].start);
                 events[i].end = new Date(events[i].end);
                 
-                if(events[i].start.getDate() > now.getDate()) {
+                if(compDate(events[i].start) <= compDate(now)) {
+                    events[i].day = "Today";
+                } else if(compDate(events[i].start) == (compDate(now) + 1)) {
                     events[i].day = "Tomorrow";
                 } else {
-                    events[i].day = "Today";
+                    events[i].day = days[events[i].start.getDay()];
                 }
 
                 if(events[i].description.length > 140) {

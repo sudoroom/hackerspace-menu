@@ -45,9 +45,6 @@ app.get('/events', function(req, res) {
     var nowish = new Date();
     nowish.setMinutes(nowish.getMinutes() - 30);
 
-    var tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-
     ical.fromURL(settings.ical_url, {}, function(err, data) {
         if(err) return error(res, err); 
         
@@ -58,7 +55,7 @@ app.get('/events', function(req, res) {
             }
             
             event = data[k];
-            if((event.start > nowish) && (event.start < tomorrow)) {
+            if(event.start >= nowish) {
                 events.push({
                     title: event.summary.replace(/ - .*/, ''),
                     start: event.start,
